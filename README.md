@@ -7,3 +7,6 @@
 - Lombok
 - Java 17
 - Logback
+- JUnit5
+- JUNIT- Params
+- H2
