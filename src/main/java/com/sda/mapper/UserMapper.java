@@ -4,13 +4,14 @@ import com.sda.dto.UserDTO;
 import com.sda.model.User;
 
 public class UserMapper {
-    public UserDTO map(User User){
+
+    public UserDTO map(User user){
         return UserDTO.builder()
-                .username(User.getUsername())
-                .name(User.getName())
-                .surname(User.getSurname())
-                .age(User.getAge())
-                .email(User.getEmail())
+                .username(user.getUsername())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .age(user.getAge())
+                .email(user.getEmail())
                 .build();
     }
 }

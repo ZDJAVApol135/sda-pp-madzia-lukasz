@@ -1,4 +1,4 @@
-#SDA Projekt Praktyczny
+# SDA Projekt Praktyczny
 
 ### Used tech:
 - Maven
