@@ -13,6 +13,6 @@ public class Main {
         User user = new User();
         user.setUsername("root");
 
-        usersDAO.create(user);
+       usersDAO.create(user);
     }
 }
