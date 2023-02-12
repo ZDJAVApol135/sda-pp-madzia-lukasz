@@ -108,6 +108,32 @@ public class UsersDAOTest {
         Assertions.assertEquals(expectedUser.getSurname(), actualUser.getSurname());
     }
 
+    @Test
+    void testUpdateHappyPath(){
+        //given
+        String userName = UUID.randomUUID().toString();
+        User user = createUser(userName);
+        usersDAO.create(user);
+        int updatedAge = 100;
+        String updatedName = "Lukasz";
+
+        user.setAge(updatedAge);
+        user.setName(updatedName);
+
+        //when
+        User updatedUser = usersDAO.update(user);
+
+        //then
+        Assertions.assertNotNull(updatedUser);
+        Assertions.assertEquals(updatedAge, updatedUser.getAge());
+        Assertions.assertEquals(updatedName, updatedUser.getName());
+        Assertions.assertEquals(user.getUsername(), updatedUser.getUsername());
+        Assertions.assertEquals(user.getSurname(), updatedUser.getSurname());
+        Assertions.assertEquals(user.getPassword(), updatedUser.getPassword());
+        Assertions.assertEquals(user.getEmail(), updatedUser.getEmail());
+
+    }
+
     private User createUser(String username) {
         Faker faker = new Faker();
         Name name = faker.name();
@@ -122,4 +148,6 @@ public class UsersDAOTest {
         user.setAge(faker.number().numberBetween(1, 150));
         return user;
     }
+
+
 }

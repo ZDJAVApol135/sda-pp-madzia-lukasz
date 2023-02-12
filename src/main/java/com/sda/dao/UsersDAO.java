@@ -41,6 +41,7 @@ public class UsersDAO {
             return users;
         }
     }
+
     public User findByUsername(String username) {
         try (Session session = HibernateUtils.openSession()) {
             return session.createQuery("from User where username = :username", User.class)
@@ -49,5 +50,16 @@ public class UsersDAO {
         }
     }
 
+    public User update(User user) {
+        Session session = HibernateUtils.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        User updatedUser = session.merge(user);
+
+        transaction.commit();
+        session.close();
+
+        return updatedUser;
+    }
 }
 
