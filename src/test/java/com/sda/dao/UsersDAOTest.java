@@ -134,6 +134,33 @@ public class UsersDAOTest {
 
     }
 
+
+    @Test
+    void testExistsUserNotFound() {
+        // given
+        String nonExistingUsername = "NON EXISTING USERNAME";
+
+        // when
+        boolean exists = usersDAO.exists(nonExistingUsername);
+
+        // then
+        Assertions.assertFalse(exists);
+    }
+
+    @Test
+    void testExistsUserFound() {
+        // given
+        String existingUsername = UUID.randomUUID().toString();
+        User userToCreate = createUser(existingUsername);
+
+        usersDAO.create(userToCreate);
+
+        // when
+        boolean exists = usersDAO.exists(existingUsername);
+
+        // then
+        Assertions.assertTrue(exists);
+    }
     private User createUser(String username) {
         Faker faker = new Faker();
         Name name = faker.name();
@@ -148,6 +175,4 @@ public class UsersDAOTest {
         user.setAge(faker.number().numberBetween(1, 150));
         return user;
     }
-
-
 }
