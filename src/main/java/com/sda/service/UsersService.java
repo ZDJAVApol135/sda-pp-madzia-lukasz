@@ -50,13 +50,23 @@ public class UsersService {
     public UserDTO findByUsername(String username) {
 
         User user = usersDAO.findByUsername(username);
-        throwNotFoundExceptionIfTrue(username, user == null);
-        return userMapper.map(user);
+
+        if (user == null) {
+            String message = "User with username: '%s' not found".formatted(username);
+            throw new NotFoundException(message);
+        }
+
+        UserDTO userDTO = userMapper.map(user);
+        return userDTO;
     }
 
     public void deleteByUsername(String username) {
         boolean deleted = usersDAO.delete(username);
-        throwNotFoundExceptionIfTrue(username, !deleted);
+
+        if (!deleted) {
+            String message = "User with username: '%s' not found".formatted(username);
+            throw new NotFoundException(message);
+        }
     }
 
     public void create(User user) {
@@ -69,8 +79,8 @@ public class UsersService {
     }
 
     public UserDTO update(User user, String username) {
-        if (user.getUsername().equals(username)) {
-            throw new UsernameConflictException("Usernames dose not match!");
+        if (!user.getUsername().equals(username)) {
+            throw new UsernameConflictException("Usernames does not match");
         }
         boolean exists = usersDAO.exists(username);
         throwNotFoundExceptionIfTrue(username, !exists);
