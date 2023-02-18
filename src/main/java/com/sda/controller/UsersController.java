@@ -40,4 +40,13 @@ public class UsersController {
       }
    }
 
+   public void deleteByUsername(String username) {
+      try {
+         usersService.deleteByUsername(username);
+         System.out.printf("User with username '%s' deleted!%n", username);
+      } catch (NotFoundException ex) {
+         log.error("NotFoundException: {}", ex.getMessage());
+      }
+   }
+
 }
