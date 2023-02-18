@@ -2,6 +2,7 @@ package com.sda;
 
 import com.sda.dao.UsersDAO;
 import com.sda.db.HibernateUtils;
+import com.sda.exception.NotFoundException;
 import com.sda.model.User;
 import org.hibernate.Session;
 
@@ -14,5 +15,8 @@ public class Main {
         user.setUsername("root");
 
        usersDAO.create(user);
+
+       throw new NotFoundException("My message");
+
     }
 }

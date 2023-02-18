@@ -2,7 +2,9 @@ package com.sda.service;
 
 import com.sda.dao.UsersDAO;
 import com.sda.dto.UserDTO;
+import com.sda.exception.NotFoundException;
 import com.sda.mapper.UserMapper;
+import com.sda.model.User;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -29,5 +31,17 @@ public class UsersService {
                 .map(user -> usersMapper.map(user))
                 .toList();
 
+    }
+
+    public UserDTO findByUsername (String username){
+        User user = usersDAO.findByUsername(username);
+
+        if (user  == null){
+            String message = "User with username: '%s' not found".formatted(username);
+            throw new NotFoundException(message);
+        }
+
+        UserDTO userDTO = usersMapper.map(user);
+        return userDTO;
     }
 }
