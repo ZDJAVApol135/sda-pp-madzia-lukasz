@@ -6,44 +6,57 @@ import com.sda.exception.NotFoundException;
 import com.sda.exception.UsernameConflictException;
 import com.sda.mapper.UserMapper;
 import com.sda.model.User;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 
+@RequiredArgsConstructor
 public class UsersService {
 
     private final UsersDAO usersDAO;
-    private final UserMapper usersMapper;
+    private final UserMapper userMapper;
 
     public List<UserDTO> findAll() {
-        // List<User> users = usersDAO.findAll();
-        // List<UserDTO> userDTOS = new ArrayList<>();
+//        List<User> users = usersDAO.findAll();
 
-        //for (User user : users){
-        //     UserDTO dto = usersMapper.map(user);
-        //     userDTOS.add(dto);
-        // }
-        // return userDTOS;
+//        List<UserDTO> userDTOS = new ArrayList<>();
+//
+//        for (User user : users) {
+//            UserDTO dto = userMapper.map(user);
+//            userDTOS.add(dto);
+//        }
+//        return userDTOS;
+
+//        return usersDAO.findAll().stream()
+//                .map(user -> userMapper.map(user))
+//                .toList();
+//
+//        Function<User, UserDTO> mapFunction = new Function<>() {
+//
+//            @Override
+//            public UserDTO apply(User user) {
+//                return userMapper.map(user);
+//            }
+//        };
+//
+//        Function<User, UserDTO> lambdaFunction = userMapper::map;
 
         return usersDAO.findAll().stream()
-                .map(user -> usersMapper.map(user))
+                .map(user -> userMapper.map(user))
                 .toList();
-
     }
 
     public UserDTO findByUsername(String username) {
+
         User user = usersDAO.findByUsername(username);
+        throwNotFoundExceptionIfTrue(username, user == null);
+        return userMapper.map(user);
+    }
 
-        if (user == null) {
-            String message = "User with username: '%s' not found".formatted(username);
-            throw new NotFoundException(message);
-        }
-
-        UserDTO userDTO = usersMapper.map(user);
-        return userDTO;
+    public void deleteByUsername(String username) {
+        boolean deleted = usersDAO.delete(username);
+        throwNotFoundExceptionIfTrue(username, !deleted);
     }
 
     public void create(User user) {
@@ -60,12 +73,16 @@ public class UsersService {
             throw new UsernameConflictException("Usernames dose not match!");
         }
         boolean exists = usersDAO.exists(username);
-        if (!exists) {
+        throwNotFoundExceptionIfTrue(username, !exists);
+
+        User updatedUser = usersDAO.update(user);
+        return userMapper.map(updatedUser);
+    }
+
+    private void throwNotFoundExceptionIfTrue(String username, boolean condition) {
+        if (condition) {
             String message = "User with username: '%s' not found".formatted(username);
             throw new NotFoundException(message);
         }
-        User updatedUser = usersDAO.update(user);
-        UserDTO userDTO = usersMapper.map(updatedUser);
-        return userDTO;
     }
 }
