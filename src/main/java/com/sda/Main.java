@@ -16,7 +16,5 @@ public class Main {
 
        usersDAO.create(user);
 
-       throw new NotFoundException("My message");
-
     }
 }
