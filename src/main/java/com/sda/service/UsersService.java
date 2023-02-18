@@ -44,4 +44,12 @@ public class UsersService {
         UserDTO userDTO = usersMapper.map(user);
         return userDTO;
     }
+    public void deleteByUsername(String username){
+        boolean delete = usersDAO.delete(username);
+
+        if (!delete){
+            String message = "User with username: '%s' not found".formatted(username);
+            throw new NotFoundException(message);
+        }
+    }
 }
