@@ -10,8 +10,8 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -30,8 +30,12 @@ public class User {
     private int age;
 
     private String email;
+
     @OneToMany(mappedBy = "user")
     private Set<Address> addresses;
+
+    @OneToMany(mappedBy = "user")
+    private Set<SocialMediaLink> socialMediaLinks;
 
     @Override
     public boolean equals(Object o) {
