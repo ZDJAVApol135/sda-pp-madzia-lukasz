@@ -1,12 +1,10 @@
 package com.sda.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,6 +30,8 @@ public class User {
     private int age;
 
     private String email;
+    @OneToMany(mappedBy = "user")
+    private Set<Address> addresses;
 
     @Override
     public boolean equals(Object o) {
